@@ -1,0 +1,38 @@
+# The directory Mix will write compiled artifacts to.
+/_build
+
+# If you run "mix test --cover", coverage assets end up here.
+/cover
+
+# The directory Mix downloads your dependencies sources to.
+/deps
+
+# Where 3rd-party dependencies like ExDoc output generated docs.
+/doc
+
+# If the VM crashes, it generates a dump, let's ignore it too.
+erl_crash.dump
+
+# Also ignore archive artifacts (built via "mix archive.build").
+*.ez
+
+# Ignore Log Dir
+/log
+
+# Ignore Data Dir
+/data
+
+# Ignore mix.lock for now
+mix.lock
+
+# Ignore vim swap files
+*.swp
+
+# Ignore ERLN8 Config
+erln8.config
+
+# Ignore Local Config
+config/local.exs
+
+# Because Mac is weird...
+.DS_Store

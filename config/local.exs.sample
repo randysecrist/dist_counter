@@ -1,0 +1,22 @@
+use Mix.Config
+
+config :api,
+  enabled: true
+
+config :logger, :access_log,
+  path: System.cwd <> "/log/access.log",
+  metadata: [:function, :module],
+  level: :debug
+
+config :logger, :error_log,
+  path: System.cwd <> "/log/error.log",
+  metadata: [:function, :module],
+  level: :error
+
+# Per Node: Cron Scheduler Override
+#
+#config :reducers, API.Scheduler,
+#  global?: true,
+#  jobs: [
+#    [name: "heartbeat", schedule: "* * * * *", task: {Service.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}]
+#  ]
