@@ -17,7 +17,7 @@ defmodule CounterTest do
   test "/counter is not found" do
     wait_until fn ->
       response = get("/counter")
-      assert 404 = response[:status]
+      assert 404 == response[:status]
     end
   end
 
@@ -25,7 +25,7 @@ defmodule CounterTest do
     input = "A"
     wait_until fn ->
       response = post(input, "/counter/foo")
-      assert 400 = response[:status]
+      assert 400 == response[:status]
     end
   end
 
@@ -33,7 +33,23 @@ defmodule CounterTest do
     input = "2"
     wait_until fn ->
       response = post(input, "/counter/foo")
-      assert 204 = response[:status]
+      assert 204 == response[:status]
+    end
+  end
+
+  test "can fetch a counter value" do
+    wait_until fn ->
+      response = get("/counter/foo/value")
+      assert 200 == response[:status]
+      assert "2" == response[:body]
+    end
+  end
+
+  test "can fetch a counter's consistent value" do
+    wait_until fn ->
+      response = get("/counter/foo/consistent_value")
+      assert 200 == response[:status]
+      assert "2" == response[:body]
     end
   end
 
