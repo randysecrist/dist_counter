@@ -1,3 +1,4 @@
+alias API.State
 alias :riak_dt_pncounter, as: PNCounter
 
 defmodule API.State do
@@ -26,10 +27,12 @@ defmodule API.State do
   end
 
   # All the usual suspects for GenServer
-  def start_link(state) do
-    GenServer.start_link(__MODULE__, state, name: __MODULE__)
+  def start_link({:options, options}) do
+    initial_state = options[:initial_state]
+    GenServer.start_link(__MODULE__, initial_state, name: __MODULE__)
   end
   def init(state0) do
+    Process.flag(:trap_exit, true)
     result = File.read(@file_path)
     state1 = case result do
       {:error, :enoent} -> state0
@@ -38,12 +41,15 @@ defmodule API.State do
     end
     {:ok, state1}
   end
+  def terminate(_reason, state) do
+    :error_logger.info_msg('API.State:  Shutting Down')
+    save_state(state)
+  end
   def handle_call(:view, _from, state) do
     {:reply, state, state}
   end
   def handle_call(:save, _from, state) do
-    File.mkdir("data")
-    File.write(@file_path, :erlang.term_to_binary(state), [:binary])
+    save_state(state)
     {:reply, :ok, state}
   end
   def handle_call({actor, counter_name, counter_value}, _from, state) do
@@ -64,6 +70,11 @@ defmodule API.State do
   end
   def handle_call(_msg, _from, state) do
     {:reply, :error, state}
+  end
+
+  defp save_state(state) do
+    File.mkdir("data")
+    File.write(@file_path, :erlang.term_to_binary(state), [:binary])
   end
 
   # we don't care about async updates for now

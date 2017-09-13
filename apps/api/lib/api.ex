@@ -20,7 +20,7 @@ defmodule API do
     import Supervisor.Spec, warn: false
     children = [
       {API, %{}},
-      {API.State, %{}},
+      worker(API.State, [options: %{initial_state: %{}}]),
       worker(API.Scheduler, [])
     ]
     opts = [strategy: :one_for_one, name: API.Supervisor]
