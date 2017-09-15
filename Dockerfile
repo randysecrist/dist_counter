@@ -25,4 +25,4 @@ RUN mix local.rebar --force
 
 RUN mix do deps.get, deps.compile
 
-CMD ["iex", "-S", "mix", "--name", "counter1@counter1", "--cookie", "monster"]
+CMD ["iex", "--name", "counter1@counter1", "--cookie", "monster", "-S", "mix"]
