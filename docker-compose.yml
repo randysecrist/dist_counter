@@ -1,6 +1,9 @@
 version: '2.1'
 services:
 
+env_file:
+    - .env
+
   counter1:
     image: randysecrist/dist_counter
     container_name: counter1
