@@ -1,0 +1,38 @@
+version: '2.1'
+services:
+
+  counter1:
+    image: randysecrist/dist_counter
+    container_name: counter1
+    ports:
+      - "7777:7777"
+    environment:
+      - CHALLENGE_ID=1
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://counter1:7777/ping"]
+        interval: 2s
+        retries: 10
+
+  counter2:
+    image: randysecrist/dist_counter
+    container_name: counter2
+    ports:
+      - "8888:7777"
+    environment:
+      - CHALLENGE_ID=2
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://counter2:7777/ping"]
+        interval: 2s
+        retries: 10
+
+  counter3:
+    image: randysecrist/dist_counter
+    container_name: counter3
+    ports:
+      - "9999:7777"
+    environment:
+      - CHALLENGE_ID=3
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://counter3:7777/ping"]
+        interval: 2s
+        retries: 10
