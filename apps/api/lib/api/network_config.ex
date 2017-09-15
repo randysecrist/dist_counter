@@ -10,9 +10,14 @@ defmodule API.NetworkConfig do
   def file(), do: @file_path
 
   def get_config() do
-    case File.read(@file_path) do
-      {:error, :enoent} -> %{"actors" => []}
-      {:ok, data} -> :erlang.binary_to_term(data)
+    case System.get_env("ACTORS") do
+      nil ->
+        case File.read(@file_path) do
+          {:error, :enoent} -> %{"actors" => []}
+          {:ok, data} -> :erlang.binary_to_term(data)
+        end
+      value ->
+        JSON.decode!(value)
     end
   end
 
