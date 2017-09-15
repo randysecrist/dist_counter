@@ -20,8 +20,9 @@ RUN set -xe \
 	&& cd /usr/local/src/elixir \
 	&& make install clean
 
+RUN mix local.hex --force
 RUN mix local.rebar --force
 
 RUN mix do deps.get, deps.compile
 
-CMD ["iex", "-S", "mix"]
+CMD ["iex", "-S", "mix", "--name", "counter1@counter1", "--cookie", "monster"]
