@@ -1,9 +1,6 @@
 version: '2.1'
 services:
 
-env_file:
-    - .env
-
   counter1:
     image: randysecrist/dist_counter
     container_name: counter1
@@ -11,6 +8,7 @@ env_file:
       - "7777:7777"
     environment:
       - CHALLENGE_ID=1
+      - ACTORS=${ACTORS}
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter1:7777/ping"]
         interval: 2s
@@ -23,6 +21,7 @@ env_file:
       - "8888:7777"
     environment:
       - CHALLENGE_ID=2
+      - ACTORS=${ACTORS}
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter2:7777/ping"]
         interval: 2s
@@ -35,6 +34,7 @@ env_file:
       - "9999:7777"
     environment:
       - CHALLENGE_ID=3
+      - ACTORS=${ACTORS}
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter3:7777/ping"]
         interval: 2s
