@@ -10,11 +10,11 @@ defmodule API.Cron do
 
   def save_state() do
     Logger.debug("Saving State")
+    connect()
     State.save
   end
 
-  def connect() do
-    Logger.debug("Connect")
+  defp connect() do
     actors = NetworkConfig.get_config["actors"]
     actors |> Enum.each(fn(actor) ->
       Node.connect(:"#{actor}@0.0.0.0")
