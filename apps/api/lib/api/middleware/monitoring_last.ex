@@ -21,8 +21,12 @@ defmodule API.Monitoring.Last do
   defp update_stat(stat, value, type \\ :counter) do
     case Exometer.update(stat, value) do
       {:error, :not_found} ->
-        Exometer.new(stat, type)
-        update_stat(stat, value)
+        try do
+          Exometer.new(stat, type)
+          update_stat(stat, value)
+        rescue
+          _error -> update_stat(stat, value)
+        end
       :ok ->
         :ok
     end

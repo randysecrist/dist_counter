@@ -1,4 +1,5 @@
 alias API.State
+alias API.Utils
 
 defmodule CounterTest do
   use ExUnit.Case, async: true
@@ -7,11 +8,17 @@ defmodule CounterTest do
   doctest API
 
   setup do
+    counter_name = Utils.gen_uuidv4()
+    wait_until fn ->
+      response = post("2", "/counter/#{counter_name}")
+      assert 204 == response[:status]
+    end
     on_exit fn ->
       wait_until fn ->
         File.rm(State.file())
       end
     end
+    [counter_name: counter_name]
   end
 
   test "/counter is not found" do
@@ -29,25 +36,17 @@ defmodule CounterTest do
     end
   end
 
-  test "can update counter at least once" do
-    input = "2"
+  test "can fetch a counter value", context do
     wait_until fn ->
-      response = post(input, "/counter/foo")
-      assert 204 == response[:status]
-    end
-  end
-
-  test "can fetch a counter value" do
-    wait_until fn ->
-      response = get("/counter/foo/value")
+      response = get("/counter/#{context[:counter_name]}/value")
       assert 200 == response[:status]
       assert "2" == response[:body]
     end
   end
 
-  test "can fetch a counter's consistent value" do
+  test "can fetch a counter's consistent value", context do
     wait_until fn ->
-      response = get("/counter/foo/consistent_value")
+      response = get("/counter/#{context[:counter_name]}/consistent_value")
       assert 200 == response[:status]
       assert "2" == response[:body]
     end

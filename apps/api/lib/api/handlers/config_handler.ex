@@ -18,6 +18,10 @@ defmodule API.ConfigHandler do
     NetworkConfig.post(req0)
   end
 
+  def handle("DELETE", _bindings, req0) do
+    NetworkConfig.delete(req0)
+  end
+
   def handle(_, _, req0) do
     req0 |> Response.send(E.make(:not_found))
   end

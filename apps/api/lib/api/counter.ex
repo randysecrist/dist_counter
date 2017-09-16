@@ -49,26 +49,19 @@ defmodule API.Counter do
   end
 
   def post(conn, name, node_id) do
-    resp_or_value = case read_body(conn, "") do
-      {:ok, body, conn2} -> handle_body(conn2, body)
+    case read_body(conn, "") do
+      {:ok, body, conn2} -> handle_body(conn2, body, name, node_id)
       {:more, _, conn2} -> handle_badlength(conn2)
       {:timeout, _, conn2} -> Response.send(conn2, E.make(:request_timeout))
     end
-    # store actor / value
-    case is_integer(resp_or_value) do
-      true ->
-        State.update_counter_state(node_id, name, resp_or_value)
-        Response.send(conn, 204)
-      false -> Response.send(conn, E.make(:unsupported_operation))
-    end
   end
 
-  defp handle_body(conn, body) when is_binary(body) do
+  defp handle_body(conn, body, name, node_id) when is_binary(body) do
     try do
-      String.to_integer(body)
+      State.update_counter_state(node_id, name, String.to_integer(body))
+      Response.send(conn, 204)
     rescue
-      _error ->
-        Response.send(conn, E.make(:validation_failure))
+      _error -> Response.send(conn, E.make(:validation_failure))
     end
   end
 

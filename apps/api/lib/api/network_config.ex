@@ -10,19 +10,21 @@ defmodule API.NetworkConfig do
   def file(), do: @file_path
 
   def get_config() do
-    case System.get_env("ACTORS") do
-      nil ->
-        case File.read(@file_path) do
-          {:error, :enoent} -> %{"actors" => []}
-          {:ok, data} -> :erlang.binary_to_term(data)
+    case File.read(@file_path) do
+      {:error, :enoent} ->
+        case System.get_env("ACTORS") do
+          nil -> %{"actors" => []}
+          value -> JSON.decode!(value)
         end
-      value ->
-        JSON.decode!(value)
+      {:ok, data} -> :erlang.binary_to_term(data)
     end
   end
 
   def get(conn) do
-    conn |> Response.send(200, get_config() |> Map.put("challenge_id", Utils.challenge_id()))
+    response = get_config()
+      |> Map.put("challenge_id", Utils.challenge_id())
+      |> Map.put("connected_nodes", Node.list)
+    conn |> Response.send(200, response)
   end
 
   def post(conn) do
@@ -36,6 +38,13 @@ defmodule API.NetworkConfig do
         save(resp_or_json)
         Response.send(conn, 204)
       false -> Response.send(conn, E.make(:invalid_argument))
+    end
+  end
+
+  def delete(conn) do
+    case File.rm!(@file_path) do
+      :ok -> Response.send(conn, 204)
+      _ -> Response.send(conn, E.make(:not_found))
     end
   end
 

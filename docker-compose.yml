@@ -6,6 +6,7 @@ services:
     container_name: counter1
     ports:
       - "7777:7777"
+    command: ["iex", "--name", "counter1@0.0.0.0", "--cookie", "monster", "--erl", "inet_dist_listen_min 6000 inet_dist_listen_max 6999", "-S", "mix"]
     environment:
       - CHALLENGE_ID=1
       - ACTORS=${ACTORS}
@@ -19,6 +20,7 @@ services:
     container_name: counter2
     ports:
       - "8888:7777"
+    command: ["iex", "--name", "counter2@0.0.0.0", "--cookie", "monster", "--erl", "inet_dist_listen_min 6000 inet_dist_listen_max 6999", "-S", "mix"]
     environment:
       - CHALLENGE_ID=2
       - ACTORS=${ACTORS}
@@ -32,6 +34,7 @@ services:
     container_name: counter3
     ports:
       - "9999:7777"
+    command: ["iex", "--name", "counter3@0.0.0.0", "--cookie", "monster", "--erl", "inet_dist_listen_min 6000 inet_dist_listen_max 6999", "-S", "mix"]
     environment:
       - CHALLENGE_ID=3
       - ACTORS=${ACTORS}

@@ -1,5 +1,6 @@
-alias API.State
 alias :riak_dt_pncounter, as: PNCounter
+
+require Logger
 
 defmodule API.State do
   use GenServer
@@ -72,9 +73,27 @@ defmodule API.State do
     {:reply, :error, state}
   end
 
-  defp save_state(state) do
-    File.mkdir("data")
-    File.write(@file_path, :erlang.term_to_binary(state), [:binary])
+  defp merge_state(local_state) do
+    case :rpc.multicall(Node.list, API.State, :view, [], 500) do
+      {remote_state_list, []} ->
+        remote_state_list |> Enum.reduce(local_state, fn(remote_state, acc) ->
+          # acc == local_accumulator, l == local state, r == remote state
+          Map.merge(acc, remote_state, fn _k, l, r -> PNCounter.merge(l, r) end)
+        end)
+      {[], []} -> local_state
+      error -> {:merge_error, error}
+    end
+  end
+
+  defp save_state(state0) do
+    state1 = merge_state(state0)
+    case state1 do
+      {:merge_error, error} ->
+        Logger.error("Merge Failure: #{inspect(error)}")
+      _ ->
+        File.mkdir("data")
+        File.write(@file_path, :erlang.term_to_binary(state1), [:binary])
+    end
   end
 
   # we don't care about async updates for now

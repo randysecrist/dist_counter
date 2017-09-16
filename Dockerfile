@@ -22,7 +22,6 @@ RUN set -xe \
 
 RUN mix local.hex --force
 RUN mix local.rebar --force
-
-RUN mix do deps.get, deps.compile
+RUN mix do deps.get, deps.compile, compile
 
 CMD ["iex", "--name", "counter1@counter1", "--cookie", "monster", "-S", "mix"]
