@@ -20,7 +20,7 @@ defmodule API.State do
     GenServer.call(__MODULE__, {:save, new_state}, timeout)
   end
   def value(counter_name, timeout \\ @timeout) do
-    state = view(timeout) |> Map.get(counter_name)
+    state = view(timeout) |> merge(timeout) |> Map.get(counter_name)
     case state do
       nil -> 0
       _ -> state |> PNCounter.value
@@ -31,15 +31,9 @@ defmodule API.State do
       remote_state = GenServer.call({__MODULE__, node}, :view, timeout)
       case is_map(remote_state) do
         true -> merge_state(acc, remote_state)
-        false ->
-          Logger.warn("Merge Error: #{inspect(remote_state)}")
-          local_state
+        false -> local_state
       end
     end)
-  end
-
-  defp merge_state(new, old) do
-    Map.merge(new, old, fn _k, l, r -> PNCounter.merge(l, r) end)
   end
 
   # All the usual suspects for GenServer
@@ -86,6 +80,10 @@ defmodule API.State do
   end
   def handle_call(_msg, _from, state) do
     {:reply, :error, state}
+  end
+
+  defp merge_state(new, old) do
+    Map.merge(new, old, fn _k, l, r -> PNCounter.merge(l, r) end)
   end
 
   defp write_file(state) do

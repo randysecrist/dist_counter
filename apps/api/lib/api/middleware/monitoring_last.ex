@@ -9,12 +9,12 @@ defmodule API.Monitoring.Last do
     diff = System.convert_time_unit(after_time - before_time, :native, :microseconds) / 1000
     path = :cowboy_req.path(req0)
     method = :cowboy_req.method(req0)
-    path_info = String.split(path, "/") |> Enum.at(1)
-    metric_name = [path_info, method]
-    update_stat(metric_name ++ [:counter], 1, :counter)
-    update_stat(metric_name ++ [:spiral], 1, :spiral)
-    update_stat(metric_name ++ [:histogram], diff, :histogram)
-    Logger.info("#{path_info},#{method}/#{diff}ms")
+    # path_info = String.split(path, "/") |> Enum.at(1)
+    # metric_name = [path_info, method]
+    # update_stat(metric_name ++ [:counter], 1, :counter)
+    # update_stat(metric_name ++ [:spiral], 1, :spiral)
+    # update_stat(metric_name ++ [:histogram], diff, :histogram)
+    Logger.info("#{path},#{method}/#{diff}ms")
     {:ok, req0, env0}
   end
 

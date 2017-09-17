@@ -14,13 +14,13 @@ defmodule API.Cron do
     State.view |> State.merge |> State.save
   end
 
-  def connect() do
+  defp connect() do
     Logger.debug("Connect")
     case length(Node.list) == length(NetworkConfig.get_config["actors"]) - 1 do
       false ->
         actors = NetworkConfig.get_config["actors"]
         actors |> Enum.each(fn(actor) ->
-          Node.connect(:"#{actor}@0.0.0.0")
+          Node.connect(:"#{actor}@#{get_actor_ip(actor)}")
         end)
       true -> :ok
     end

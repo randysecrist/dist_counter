@@ -2,7 +2,6 @@ FROM erlang:20
 
 ADD . /root
 WORKDIR /root
-EXPOSE 6000-6999
 
 # elixir expects utf8.
 ENV ELIXIR_VERSION="v1.5.1" \

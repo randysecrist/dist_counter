@@ -27,22 +27,4 @@ defmodule API.Utils do
     end
   end
 
-  @spec get(String.t, integer(), String.t) :: binary()
-  def get(host, port, query_string, timeout \\ 100) do
-    :application.ensure_all_started(:gun)
-    {:ok, pid} = :gun.open(host, port, %{})
-    stream_ref = :gun.get(pid, query_string)
-    read_stream(pid, stream_ref, timeout)
-  end
-  defp read_stream(pid, stream_ref, timeout) do
-    case :gun.await(pid, stream_ref, timeout) do
-    	{:response, :fin, status, headers} ->
-    		%{status: status, headers: headers}
-    	{:response, :nofin, status, headers} ->
-    		{:ok, body} = :gun.await_body(pid, stream_ref)
-        %{body: body, headers: headers, status: status}
-      {:error, :timeout} -> {:error, :timeout}
-    end
-  end
-
 end
