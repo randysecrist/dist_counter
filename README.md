@@ -35,7 +35,23 @@ There is also a bash script in bin/ called ```challenge-executable.sh``` which s
 
 ```MIX_ENV={dev,test,prod}``` may also be used to describe which configuration environment to point to.  The default is ```dev```.
 
-## Docker Container
+```ACTORS="{\"actors\":[\"counter1\", \"counter2\", \"counter3\"]}"``` can also be passed as an environment variable.  Docker Compose does this automatically.  The /config POST mechanism overrides this environment variable and can be used to add an actor at runtime.  Note that each node needs to be sent the configuration.
+
+## Docker Compose
+
+The following commands will start a three node cluster and connect them all together.
+
+```bash
+docker-compose up -d
+```
+
+The nodes will be exposed on ports ```7777```, ```8888```, and ```9999```.
+
+The following will stop/start individual nodes to easily facilitate testing partitions.
+
+```docker stop counter3```
+
+## Docker Container (Manual)
 
 The following commands will pull a docker image and setup a 3 node environment.
 
@@ -69,7 +85,7 @@ curl http://localhost:8888/counter/mycount/value
 ```
 ### Process Failure
 
-Counter state is flushed to disk once a minute per node.  This means that if a process dies then data for the last minute may be lost.  This could be improved upon in another iteration but a implementation trade off was made.
+Counter state is flushed to disk every 5 seconds (configurable) per node.  This means that if a process dies then some data may be lost.  Nodes also attempt to merge counter data with each other during this save.
 
 ### Network Partitions
 
