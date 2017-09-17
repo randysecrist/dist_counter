@@ -38,7 +38,7 @@ config :api, API.Scheduler,
  jobs: [
    [name: "heartbeat", schedule: "* * * * *", task: {API.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}],
    [name: "save_state", schedule: {:extended, "*/5 * * * * *"},
-    task: {API.Cron, :save_state, []}, run_strategy: {Quantum.RunStrategy.All, [node()]}],
+    task: {API.Cron, :save_state, []}, run_strategy: {Quantum.RunStrategy.All, [node()]}]
  ]
 
 

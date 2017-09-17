@@ -6,19 +6,24 @@ require Logger
 defmodule API.Cron do
   def heartbeat() do
     Logger.debug("Cron: Heartbeat")
+    connect()
   end
 
   def save_state() do
     Logger.debug("Saving State")
-    connect()
-    State.save
+    State.view |> State.merge |> State.save
   end
 
-  defp connect() do
-    actors = NetworkConfig.get_config["actors"]
-    actors |> Enum.each(fn(actor) ->
-      Node.connect(:"#{actor}@0.0.0.0")
-    end)
+  def connect() do
+    Logger.debug("Connect")
+    case length(Node.list) == length(NetworkConfig.get_config["actors"]) - 1 do
+      false ->
+        actors = NetworkConfig.get_config["actors"]
+        actors |> Enum.each(fn(actor) ->
+          Node.connect(:"#{actor}@0.0.0.0")
+        end)
+      true -> :ok
+    end
   end
 
   defp get_actor_ip(actor) do

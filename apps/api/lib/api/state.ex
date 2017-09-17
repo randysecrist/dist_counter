@@ -16,8 +16,8 @@ defmodule API.State do
   def view(timeout \\ @timeout) do
     GenServer.call(__MODULE__, :view, timeout)
   end
-  def save(timeout \\ @timeout) do
-    GenServer.call(__MODULE__, :save, timeout)
+  def save(new_state, timeout \\ @timeout) do
+    GenServer.call(__MODULE__, {:save, new_state}, timeout)
   end
   def value(counter_name, timeout \\ @timeout) do
     state = view(timeout) |> Map.get(counter_name)
@@ -25,6 +25,21 @@ defmodule API.State do
       nil -> 0
       _ -> state |> PNCounter.value
     end
+  end
+  def merge(local_state, timeout \\ @timeout) do
+    Node.list |> Enum.reduce(local_state, fn (node, acc) ->
+      remote_state = GenServer.call({__MODULE__, node}, :view, timeout)
+      case is_map(remote_state) do
+        true -> merge_state(acc, remote_state)
+        false ->
+          Logger.warn("Merge Error: #{inspect(remote_state)}")
+          local_state
+      end
+    end)
+  end
+
+  defp merge_state(new, old) do
+    Map.merge(new, old, fn _k, l, r -> PNCounter.merge(l, r) end)
   end
 
   # All the usual suspects for GenServer
@@ -44,14 +59,14 @@ defmodule API.State do
   end
   def terminate(_reason, state) do
     :error_logger.info_msg('API.State:  Shutting Down')
-    save_state(state)
+    write_file(state)
   end
   def handle_call(:view, _from, state) do
     {:reply, state, state}
   end
-  def handle_call(:save, _from, state) do
-    save_state(state)
-    {:reply, :ok, state}
+  def handle_call({:save, new_state}, _from, state) do
+    state1 = merge_state(new_state, state) |> write_file
+    {:reply, :ok, state1}
   end
   def handle_call({actor, counter_name, counter_value}, _from, state) do
     # always do a local read before write
@@ -73,27 +88,10 @@ defmodule API.State do
     {:reply, :error, state}
   end
 
-  defp merge_state(local_state) do
-    case :rpc.multicall(Node.list, API.State, :view, [], 500) do
-      {remote_state_list, []} ->
-        remote_state_list |> Enum.reduce(local_state, fn(remote_state, acc) ->
-          # acc == local_accumulator, l == local state, r == remote state
-          Map.merge(acc, remote_state, fn _k, l, r -> PNCounter.merge(l, r) end)
-        end)
-      {[], []} -> local_state
-      error -> {:merge_error, error}
-    end
-  end
-
-  defp save_state(state0) do
-    state1 = merge_state(state0)
-    case state1 do
-      {:merge_error, error} ->
-        Logger.error("Merge Failure: #{inspect(error)}")
-      _ ->
-        File.mkdir("data")
-        File.write(@file_path, :erlang.term_to_binary(state1), [:binary])
-    end
+  defp write_file(state) do
+    File.mkdir("data")
+    File.write(@file_path, :erlang.term_to_binary(state), [:binary])
+    state
   end
 
   # we don't care about async updates for now
