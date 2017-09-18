@@ -37,8 +37,8 @@ config :api, API.Scheduler,
  global: true,
  jobs: [
    [name: "heartbeat", overlap: false, schedule: "* * * * *", task: {API.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}],
-   [name: "save_state", schedule: {:extended, "*/5 * * * * *"},
-    task: {API.Cron, :save_state, []}, run_strategy: {Quantum.RunStrategy.All, [node()]}]
+   [name: "save_state", overlap: true, schedule: {:extended, "*/5 * * * * *"},
+    task: {API.Cron, :save_state, []}, run_strategy: {Quantum.RunStrategy.All, :cluster}]
  ]
 
 
