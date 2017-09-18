@@ -1,5 +1,3 @@
-require Logger
-
 defmodule API.Response do
 
   alias API.Error, as: E
