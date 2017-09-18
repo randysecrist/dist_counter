@@ -1,4 +1,5 @@
 # Challenge API
+[![Build Status](https://travis-ci.org/randysecrist/dist_counter.svg?branch=master)](https://travis-ci.org/randysecrist/dist_counter)
 
 This is a simple [pncounter](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type#PN-Counter_.28Positive-Negative_Counter.29) API implementation using [riak_dt](https://github.com/basho/riak_dt).
 
