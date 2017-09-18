@@ -34,9 +34,9 @@ config :tzdata, [
   data_dir: "./data"]
 
 config :api, API.Scheduler,
- global?: true,
+ global: true,
  jobs: [
-   [name: "heartbeat", schedule: "* * * * *", task: {API.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}],
+   [name: "heartbeat", overlap: false, schedule: "* * * * *", task: {API.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}],
    [name: "save_state", schedule: {:extended, "*/5 * * * * *"},
     task: {API.Cron, :save_state, []}, run_strategy: {Quantum.RunStrategy.All, [node()]}]
  ]
