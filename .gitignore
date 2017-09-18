@@ -36,3 +36,7 @@ config/local.exs
 
 # Because Mac is weird...
 .DS_Store
+
+# IDEA Crap
+*.idea
+*.iml
