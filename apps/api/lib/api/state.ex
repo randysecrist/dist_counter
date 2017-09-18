@@ -1,7 +1,5 @@
 alias :riak_dt_pncounter, as: PNCounter
 
-require Logger
-
 defmodule API.State do
   use GenServer
 
