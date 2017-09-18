@@ -36,3 +36,6 @@ config/local.exs
 
 # Because Mac is weird...
 .DS_Store
+
+# Ignore mix temp files
+.mix
