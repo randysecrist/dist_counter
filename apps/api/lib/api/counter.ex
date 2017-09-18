@@ -1,9 +1,7 @@
-alias API.Config
 alias API.State
 alias API.NetworkConfig
 alias API.Response
 alias API.Error, as: E
-alias API.Utils
 
 import API.Post
 

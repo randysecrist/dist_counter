@@ -1,0 +1,11 @@
+language: elixir
+elixir:
+    - 1.5.1
+notifications:
+  recipients:
+    - randy.secrist@gmail.com
+otp_release:
+  - 20.0
+env:
+  - MIX_ENV=test
+script: mix test

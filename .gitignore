@@ -40,3 +40,6 @@ config/local.exs
 # IDEA Crap
 *.idea
 *.iml
+
+# Ignore mix temp files
+.mix
