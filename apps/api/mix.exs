@@ -37,7 +37,7 @@ defmodule API.Mixfile do
       {:quantum, "~> 2.1.0"},
       {:exometer_core, github: "Feuerlabs/exometer_core"},
       {:setup, github: "uwiger/setup", manager: :rebar, override: true},
-      {:uuid, github: "okeuday/uuid"},
+      {:uuid, "~> 1.7.2", hex: :uuid_erl},
       {:tzdata, "~> 0.5.12"},
       {:meck, "~> 0.8.4", runtime: false, override: true}
     ]
