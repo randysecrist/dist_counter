@@ -4,11 +4,16 @@ config :ssl, protocol_version: :"tlsv1.2"
 
 config :logger,
   backends: [
+    :console,
     {FileLoggerBackend, :error_log},
     {FileLoggerBackend, :access_log}],
   utc_log: true,
   compile_time_purge_level: :debug,
   truncate: 4096
+
+config :logger, :console,
+  metadata: [:function, :module],
+  level: :debug
 
 config :logger, :access_log,
   path: System.cwd <> "/log/access.log",

@@ -34,7 +34,7 @@ defmodule API.Mixfile do
       {:observer_cli, "~> 1.1.0"},
       {:poison, "~> 3.1"},
       {:json, "~> 1.0"},
-      {:quantum, "~> 2.1.0"},
+      {:quantum, github: "c-rack/quantum-elixir"},
       {:exometer_core, github: "Feuerlabs/exometer_core"},
       {:setup, github: "uwiger/setup", manager: :rebar, override: true},
       {:uuid, "~> 1.7.2", hex: :uuid_erl},
