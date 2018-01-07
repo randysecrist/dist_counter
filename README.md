@@ -94,3 +94,6 @@ The ```/counter/:name/value``` endpoint will always try to return the best answe
 
 The ```/counter/:name/consistent_value``` endpoint will only return an answer if all nodes are available.
 
+### Cluster Healing & Cron Jobs
+
+Every minute a node in the cluster will attempt to connect to peer actor nodes.  When a cluster change is detected then cron jobs will rebalance accordingly.  Some jobs run on each node always (saving state) while others are intended to just run on one random node in the cluster.
