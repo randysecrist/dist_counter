@@ -15,13 +15,13 @@ COPY docker/setup.sh /
 RUN /setup.sh && rm /setup.sh
 
 # elixir expects utf8.
-ENV ELIXIR_VERSION="v1.5.1" \
+ENV ELIXIR_VERSION="v1.6.4" \
 	LANG=C.UTF-8 \
 	MIX_ENV=dev
 
 RUN set -xe \
 	&& ELIXIR_DOWNLOAD_URL="https://github.com/elixir-lang/elixir/archive/${ELIXIR_VERSION}.tar.gz" \
-	&& ELIXIR_DOWNLOAD_SHA256="9a903dc71800c6ce8f4f4b84a1e4849e3433e68243958fd6413a144857b61f6a" \
+	&& ELIXIR_DOWNLOAD_SHA256="c12a4931a5383a8a9e9eb006566af698e617b57a1f645a6cb132a321b671292d" \
 	&& curl -fSL -o elixir-src.tar.gz $ELIXIR_DOWNLOAD_URL \
 	&& echo "$ELIXIR_DOWNLOAD_SHA256  elixir-src.tar.gz" | sha256sum -c - \
 	&& mkdir -p /usr/local/src/elixir \
