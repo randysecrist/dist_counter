@@ -2,17 +2,20 @@ version: '2.1'
 services:
 
   counter1:
-    image: randysecrist/dist_counter
+    image: randysecrist/dist_counter:latest
     container_name: counter1
     networks:
       vpcbr:
         ipv4_address: 10.5.0.5
     ports:
       - "7777:7777"
-    command: ["iex", "--name", "counter1@10.5.0.5", "--cookie", "monster", "-S", "mix"]
     environment:
+      - NODE_SNAME=counter1
+      - NODE_IP=10.5.0.5
+      - NODE_COOKIE=monster
       - CHALLENGE_ID=1
-      - ACTORS=${ACTORS}
+    env_file:
+      - docker/dist_counter.env
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter1:7777/ping"]
         interval: 2s
@@ -26,10 +29,13 @@ services:
         ipv4_address: 10.5.0.6
     ports:
       - "8888:7777"
-    command: ["iex", "--name", "counter2@10.5.0.6", "--cookie", "monster", "-S", "mix"]
     environment:
+      - NODE_SNAME=counter2
+      - NODE_IP=10.5.0.6
+      - NODE_COOKIE=monster
       - CHALLENGE_ID=2
-      - ACTORS=${ACTORS}
+    env_file:
+      - docker/dist_counter.env
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter2:7777/ping"]
         interval: 2s
@@ -43,10 +49,13 @@ services:
         ipv4_address: 10.5.0.7
     ports:
       - "9999:7777"
-    command: ["iex", "--name", "counter3@10.5.0.7", "--cookie", "monster", "-S", "mix"]
     environment:
+      - NODE_SNAME=counter3
+      - NODE_IP=10.5.0.7
+      - NODE_COOKIE=monster
       - CHALLENGE_ID=3
-      - ACTORS=${ACTORS}
+    env_file:
+      - docker/dist_counter.env
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter3:7777/ping"]
         interval: 2s

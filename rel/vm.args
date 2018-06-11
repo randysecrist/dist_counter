@@ -1,0 +1,5 @@
+## Node name
+-name ${NODE_SNAME}@${NODE_IP}
+
+## Node cookie, used for distribution
+-setcookie ${NODE_COOKIE}

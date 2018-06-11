@@ -1,7 +1,18 @@
-FROM erlang:20
+FROM erlang:20.3.7-alpine
+MAINTAINER randy.secrist@gmail.com
 
-ADD . /root
+# OS Setup
 WORKDIR /root
+
+# Install OS Packages
+RUN set -xe \
+  && apk --no-cache --update upgrade \
+  && apk --no-cache add curl make git bash g++ jq \
+  && rm -rf /var/cache/apk/*
+
+# setup os user
+COPY docker/setup.sh /
+RUN /setup.sh && rm /setup.sh
 
 # elixir expects utf8.
 ENV ELIXIR_VERSION="v1.5.1" \
@@ -19,8 +30,17 @@ RUN set -xe \
 	&& cd /usr/local/src/elixir \
 	&& make install clean
 
+USER root
+ADD . /home/elixir
+WORKDIR /home/elixir
+RUN chown -R elixir:elixir .
+
+USER elixir
 RUN mix local.hex --force
 RUN mix local.rebar --force
 RUN mix do deps.get, deps.compile, compile
+RUN mix release
 
-CMD ["iex", "--name", "counter1@counter1", "--cookie", "monster", "-S", "mix"]
+# Hookup Release to Entrypoint and Command
+ENTRYPOINT ["docker/entrypoint.sh"]
+CMD _build/dev/rel/dist_counter/bin/dist_counter foreground
