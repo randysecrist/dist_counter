@@ -31,12 +31,12 @@ defmodule API.Mixfile do
       {:gun, github: "ninenines/gun"},
       {:riak_dt, github: "basho/riak_dt", tag: "2.1.4"},
       {:ranch, github: "ninenines/ranch", ref: "1.4.0", override: true},
-      {:observer_cli, "~> 1.1.0"},
       {:poison, "~> 3.1"},
       {:json, "~> 1.0"},
       {:quantum, github: "c-rack/quantum-elixir"},
       {:exometer_core, github: "Feuerlabs/exometer_core"},
       {:setup, github: "uwiger/setup", manager: :rebar, override: true},
+      {:parse_trans, "~> 3.2.0", override: true},
       {:uuid, "~> 1.7.2", hex: :uuid_erl},
       {:tzdata, "~> 0.5.12"},
       {:meck, "~> 0.8.4", runtime: false, override: true}

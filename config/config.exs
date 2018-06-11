@@ -39,13 +39,17 @@ config :tzdata, [
   data_dir: "./data"]
 
 config :api, API.Scheduler,
- global: true,
- jobs: [
-   [name: "heartbeat", overlap: false, schedule: "* * * * *", task: {API.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}],
-   [name: "save_state", overlap: true, schedule: {:extended, "*/5 * * * * *"},
-    task: {API.Cron, :save_state, []}, run_strategy: {Quantum.RunStrategy.All, :cluster}]
- ]
+  global: true,
+  jobs: [
+    [name: "heartbeat", overlap: false, schedule: "* * * * *", task: {API.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}],
+    [name: "save_state", overlap: true, schedule: {:extended, "*/5 * * * * *"},
+     task: {API.Cron, :save_state, []}, run_strategy: {Quantum.RunStrategy.All, :cluster}]
+  ]
 
+config :distillery,
+  no_warn_missing: [
+    :meck,
+  ]
 
 import_config "../apps/*/config/config.exs"
 import_config "*local.exs"
