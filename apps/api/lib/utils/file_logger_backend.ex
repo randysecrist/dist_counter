@@ -1,5 +1,5 @@
 defmodule FileLoggerBackend do
-  use GenEvent
+  @behaviour :gen_event
 
   @type path      :: String.t
   @type file      :: :file.io_device
