@@ -14,7 +14,7 @@ defmodule API.Monitoring.Last do
     # update_stat(metric_name ++ [:counter], 1, :counter)
     # update_stat(metric_name ++ [:spiral], 1, :spiral)
     # update_stat(metric_name ++ [:histogram], diff, :histogram)
-    Logger.info("#{path},#{method}/#{diff}ms")
+    Logger.info("path=#{path}, method=#{method}, time=#{diff}ms")
     {:ok, req0, env0}
   end
 

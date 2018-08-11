@@ -2,6 +2,7 @@ use Mix.Config
 
 config :ssl, protocol_version: :"tlsv1.2"
 
+# Log format is done here (for consule), in FileLoggerBackend, and monitoring_last.ex
 config :logger,
   backends: [
     :console,
@@ -12,18 +13,20 @@ config :logger,
   truncate: 4096
 
 config :logger, :console,
-  metadata: [:function, :module],
-  level: :debug
+  level: :debug,
+  # TODO: figure out how to suppress logs from external modules
+  # metadata: [:module, :function, :line],
+  format: "[$date,$time] [$level] [$node|#{Mix.env}], $metadata$levelpad$message\n"
 
 config :logger, :access_log,
-  path: System.cwd <> "/log/access.log",
-  metadata: [:function, :module],
   level: :info
+  path: System.cwd <> "/log/access.log",
+  metadata: [:module, :function, :line],
 
 config :logger, :error_log,
-  path: System.cwd <> "/log/error.log",
-  metadata: [:function, :module],
   level: :error
+  path: System.cwd <> "/log/error.log",
+  metadata: [:module, :function, :line],
 
 # if a process decides to have a uuid cache
 config :quickrand,

@@ -4,7 +4,7 @@ defmodule API.Mixfile do
   def project do
     [app: :api,
      version: ChallengeAPI.Mixfile.version,
-     elixir: "~> 1.4",
+     elixir: "~> 1.6",
      build_path: "../../_build",
      config_path: "../../config/config.exs",
      deps_path: "../../deps",
@@ -31,15 +31,15 @@ defmodule API.Mixfile do
       {:gun, github: "ninenines/gun"},
       {:riak_dt, github: "basho/riak_dt", tag: "2.1.4"},
       {:ranch, github: "ninenines/ranch", ref: "1.4.0", override: true},
-      {:poison, "~> 3.1"},
-      {:json, "~> 1.0"},
+      {:poison, "~> 4.0.1"},
+      {:json, "~> 2.1.0-SNAPSHOT"},
       {:quantum, github: "c-rack/quantum-elixir"},
       {:exometer_core, github: "Feuerlabs/exometer_core"},
       {:setup, github: "uwiger/setup", manager: :rebar, override: true},
-      {:parse_trans, "~> 3.2.0", override: true},
-      {:uuid, "~> 1.7.2", hex: :uuid_erl},
-      {:tzdata, "~> 0.5.12"},
-      {:meck, "~> 0.8.4", runtime: false, override: true}
+      {:parse_trans, "~> 3.3.0", override: true},
+      {:uuid, "~> 1.7.3", hex: :uuid_erl},
+      {:tzdata, "~> 0.5.17"},
+      {:meck, "~> 0.8.12", runtime: false, override: true}
     ]
   end
 end

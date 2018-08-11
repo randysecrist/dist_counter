@@ -8,7 +8,7 @@ defmodule FileLoggerBackend do
   @type level     :: Logger.level
   @type metadata  :: [atom]
 
-  @default_format "[$date,$time] [$node|#{Mix.env}],$metadata[$level] $levelpad$message\n"
+  @default_format "[$date,$time] [$level] [$node|#{Mix.env}], $metadata$levelpad$message\n"
 
   def init({__MODULE__, name}) do
     {:ok, configure(name, [])}
@@ -32,6 +32,13 @@ defmodule FileLoggerBackend do
 
   def handle_event(:flush, state) do
     {:ok, state}
+  end
+
+  def handle_info({:io_reply, _ref, :ok}, state) do
+    {:ok, state}
+  end
+  def handle_info(_ref, state) do
+    {:noreply, [], state}
   end
 
   defp log_event(_level, _msg, _ts, _md, %{path: nil} = state) do
