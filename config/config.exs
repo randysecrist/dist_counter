@@ -19,14 +19,14 @@ config :logger, :console,
   format: "[$date,$time] [$level] [$node|#{Mix.env}], $metadata$levelpad$message\n"
 
 config :logger, :access_log,
-  level: :info
+  level: :info,
   path: System.cwd <> "/log/access.log",
-  metadata: [:module, :function, :line],
+  metadata: [:module, :function, :line]
 
 config :logger, :error_log,
-  level: :error
+  level: :error,
   path: System.cwd <> "/log/error.log",
-  metadata: [:module, :function, :line],
+  metadata: [:module, :function, :line]
 
 # if a process decides to have a uuid cache
 config :quickrand,
