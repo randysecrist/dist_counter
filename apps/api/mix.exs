@@ -26,11 +26,11 @@ defmodule API.Mixfile do
 
   defp deps do
     [
-      {:cowboy, github: "ninenines/cowboy"},
-      {:cowlib, github: "ninenines/cowlib", override: true},
-      {:gun, github: "ninenines/gun"},
+      {:cowboy, github: "ninenines/cowboy", tag: "2.5.0"},
+      {:cowlib, github: "ninenines/cowlib", tag: "2.6.0", override: true},
+      {:ranch, github: "ninenines/ranch", ref: "1.6.2", override: true},
+      {:gun, "~> 1.3.0", override: true},
       {:riak_dt, github: "basho/riak_dt", tag: "2.1.4"},
-      {:ranch, github: "ninenines/ranch", ref: "1.4.0", override: true},
       {:poison, "~> 4.0.1"},
       {:json, "~> 2.1.0-SNAPSHOT"},
       {:quantum, github: "c-rack/quantum-elixir"},
