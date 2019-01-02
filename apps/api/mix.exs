@@ -3,7 +3,7 @@ defmodule API.Mixfile do
 
   def project do
     [app: :api,
-     version: ChallengeAPI.Mixfile.version,
+     version: "0.0.1-dev",
      elixir: "~> 1.6",
      build_path: "../../_build",
      config_path: "../../config/config.exs",

@@ -4,29 +4,18 @@ config :ssl, protocol_version: :"tlsv1.2"
 
 # Log format is done here (for consule), in FileLoggerBackend, and monitoring_last.ex
 config :logger,
-  backends: [
-    :console,
-    {FileLoggerBackend, :error_log},
-    {FileLoggerBackend, :access_log}],
   utc_log: true,
-  compile_time_purge_level: :debug,
-  truncate: 4096
-
-config :logger, :console,
-  level: :debug,
-  # TODO: figure out how to suppress logs from external modules
-  # metadata: [:module, :function, :line],
-  format: "[$date,$time] [$level] [$node|#{Mix.env}], $metadata$levelpad$message\n"
-
-config :logger, :access_log,
-  level: :info,
-  path: System.cwd <> "/log/access.log",
-  metadata: [:module, :function, :line]
-
-config :logger, :error_log,
-  level: :error,
-  path: System.cwd <> "/log/error.log",
-  metadata: [:module, :function, :line]
+  compile_time_purge_matching: [
+    [level_lower_than: :info]
+  ],
+  # level: :info,
+  mode: :async,
+  truncate: 4096,
+  async_threshold: 75,
+  sync_threshold: 100,
+  discard_threshold: 300,
+  handle_otp_reports: true,
+  handle_sasl_reports: false
 
 # if a process decides to have a uuid cache
 config :quickrand,
@@ -43,6 +32,8 @@ config :tzdata, [
 
 config :api, API.Scheduler,
   global: true,
+  debug_logging: false,
+  timeout: 10_000,
   jobs: [
     [name: "heartbeat", overlap: false, schedule: "* * * * *", task: {API.Cron, :heartbeat, []}, run_strategy: {Quantum.RunStrategy.Random, :cluster}],
     [name: "save_state", overlap: true, schedule: {:extended, "*/5 * * * * *"},
@@ -54,5 +45,6 @@ config :distillery,
     :meck,
   ]
 
+import_config "#{Mix.env}.exs"
 import_config "../apps/*/config/config.exs"
 import_config "*local.exs"
