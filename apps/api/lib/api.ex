@@ -75,14 +75,13 @@ defmodule API do
   defp cowboy_opts(dispatch) do
     %{
       env: %{dispatch: dispatch},
+      metrics_callback: &Monitoring.metrics_callback/1,
       middlewares: [
-        Monitoring.First,
         :cowboy_router,
         :cowboy_handler,
-        Monitoring.Last
       ],
       # onresponse: &API.Monitoring.Last.execute/4
-      stream_handlers: [:cowboy_compress_h, :cowboy_stream_h]
+      stream_handlers: [:cowboy_metrics_h, :cowboy_compress_h, :cowboy_stream_h]
     }
   end
 
