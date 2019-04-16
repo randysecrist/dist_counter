@@ -19,9 +19,9 @@ defmodule ChallengeAPI.Mixfile do
   end
 
   defp deps do
-    [{:dialyzex, "~> 1.0.0", only: [:dev], runtime: false},
-     {:ex_doc, "~> 0.15.0", only: :dev, runtime: false},
-     {:observer_cli, "~> 1.2.1"},
-     {:distillery, "~> 1.5"}]
+    [{:dialyzex, "~> 1.2.1", only: [:dev], runtime: false},
+     {:ex_doc, "~> 0.20.2", only: :dev, runtime: false},
+     {:observer_cli, "~> 1.4.2"},
+     {:distillery, "~> 2.0.12"}]
   end
 end

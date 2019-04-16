@@ -8,8 +8,8 @@ config :api,
       {:acceptors, System.schedulers_online * 4},
     ],
     ssl: [
-      {:keyfile, System.cwd <> "/priv/ssl/__challenge_com.key"},
-      {:certfile, System.cwd <> "/priv/ssl/__challenge_com.crt"},
-      {:cacertfile, System.cwd <> "/priv/ssl/__challenge_com.ca-bundle"}
+      {:keyfile, File.cwd! <> "/priv/ssl/__challenge_com.key"},
+      {:certfile, File.cwd! <> "/priv/ssl/__challenge_com.crt"},
+      {:cacertfile, File.cwd! <> "/priv/ssl/__challenge_com.ca-bundle"}
     ]
   ]

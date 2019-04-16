@@ -13,7 +13,7 @@ defmodule API.Monitoring do
                          resp_body_length: resp_body_length,
                          req_start: req_start, req_end: _req_end,
                          resp_start: _resp_start, resp_end: resp_end} = _metrics) do
-    diff = System.convert_time_unit(resp_end - req_start, :native, :microseconds) / 1000
+    diff = System.convert_time_unit(resp_end - req_start, :native, :microsecond) / 1000
 
     # For Later when we want Stats
     # path_info = String.split(path, "/") |> Enum.at(2)

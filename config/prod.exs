@@ -12,5 +12,5 @@ config :logger, :console,
 
 config :logger, :error_log,
   level: :error,
-  path: System.cwd <> "/log/error.log",
+  path: File.cwd! <> "/log/error.log",
   metadata: [:function, :module, :line]

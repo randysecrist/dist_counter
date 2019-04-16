@@ -7,10 +7,10 @@ config :logger,
 
 config :logger, :access_log,
   level: :info,
-  path: System.cwd <> "/log/access.log",
+  path: File.cwd! <> "/log/access.log",
   metadata: [:function, :module, :line]
 
 config :logger, :error_log,
   level: :error,
-  path: System.cwd <> "/log/error.log",
+  path: File.cwd! <> "/log/error.log",
   metadata: [:function, :module, :line]

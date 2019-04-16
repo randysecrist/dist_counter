@@ -8,7 +8,7 @@ config :api,
       {:acceptors, System.schedulers_online * 2},
     ],
     ssl: [
-      {:keyfile, System.cwd <> "/priv/ssl/localhost.key"},
-      {:certfile, System.cwd <> "/priv/ssl/localhost.crt"}
+      {:keyfile, File.cwd! <> "/priv/ssl/localhost.key"},
+      {:certfile, File.cwd! <> "/priv/ssl/localhost.crt"}
     ]
 ]

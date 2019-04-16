@@ -21,6 +21,7 @@ defmodule API do
     children = [
       {API, %{}},
       worker(API.State, [options: %{initial_state: %{}}]),
+      # supervisor(Task.Supervisor, [[name: API.TaskSupervisor]]),
       worker(API.Scheduler, [])
     ]
     opts = [strategy: :one_for_one, name: API.Supervisor]
@@ -89,7 +90,7 @@ defmodule API do
     [{:cacertfile, Config.get_ssl_cacertfile()},
      {:certfile, Config.get_ssl_certfile()},
      {:keyfile, Config.get_ssl_keyfile()},
-     {:versions, [:'tlsv1.2', :'tlsv1.1', :'tlsv1']}]
+     {:versions, [:'tlsv1.2', :'tlsv1.1', :tlsv1]}]
   end
 
 end
