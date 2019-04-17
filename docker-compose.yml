@@ -2,7 +2,7 @@ version: '2.1'
 services:
 
   counter1:
-    image: randysecrist/dist_counter:latest
+    image: randysecrist/dist_counter:master
     container_name: counter1
     networks:
       vpcbr:
@@ -22,7 +22,7 @@ services:
         retries: 10
 
   counter2:
-    image: randysecrist/dist_counter
+    image: randysecrist/dist_counter:master
     container_name: counter2
     networks:
       vpcbr:
@@ -42,7 +42,7 @@ services:
         retries: 10
 
   counter3:
-    image: randysecrist/dist_counter
+    image: randysecrist/dist_counter:master
     container_name: counter3
     networks:
       vpcbr:
