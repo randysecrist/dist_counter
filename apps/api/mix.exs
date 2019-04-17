@@ -34,7 +34,7 @@ defmodule API.Mixfile do
       {:riak_dt, github: "basho/riak_dt", tag: "2.1.4"},
       {:poison, "~> 4.0.1"},
       {:json, "~> 2.1.0-SNAPSHOT"},
-      {:quantum, github: "c-rack/quantum-elixir", tag: "v2.0.0"},
+      {:quantum, github: "c-rack/quantum-elixir", tag: "v1.9.3"},
       {:exometer_core, github: "Feuerlabs/exometer_core", tag: "v1.5.7"},
       {:setup, github: "uwiger/setup", tag: "2.0.2", manager: :rebar, override: true},
       {:parse_trans, "~> 3.3.0", override: true},
