@@ -39,8 +39,6 @@ USER elixir
 RUN MIX_ENV=dev mix do local.hex --force, local.rebar --force
 RUN MIX_ENV=dev mix do deps.get, deps.compile, compile
 RUN MIX_ENV=dev mix release --env=dev
-RUN MIX_ENV=dev mix clean
-RUN MIX_ENV=dev mix deps.clean --all
 
 # Hookup Release to Entrypoint and Command
 ENV REPLACE_OS_VARS true
