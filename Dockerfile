@@ -1,4 +1,4 @@
-FROM erlang:20.3.7-alpine
+FROM erlang:21.2.7-alpine
 MAINTAINER randy.secrist@gmail.com
 
 # OS Setup
@@ -15,13 +15,13 @@ COPY docker/setup.sh /
 RUN /setup.sh && rm /setup.sh
 
 # elixir expects utf8.
-ENV ELIXIR_VERSION="v1.6.4" \
+ENV ELIXIR_VERSION="v1.8.1" \
 	LANG=C.UTF-8 \
 	MIX_ENV=dev
 
 RUN set -xe \
 	&& ELIXIR_DOWNLOAD_URL="https://github.com/elixir-lang/elixir/archive/${ELIXIR_VERSION}.tar.gz" \
-	&& ELIXIR_DOWNLOAD_SHA256="c12a4931a5383a8a9e9eb006566af698e617b57a1f645a6cb132a321b671292d" \
+	&& ELIXIR_DOWNLOAD_SHA256="de8c636ea999392496ccd9a204ccccbc8cb7f417d948fd12692cda2bd02d9822" \
 	&& curl -fSL -o elixir-src.tar.gz $ELIXIR_DOWNLOAD_URL \
 	&& echo "$ELIXIR_DOWNLOAD_SHA256  elixir-src.tar.gz" | sha256sum -c - \
 	&& mkdir -p /usr/local/src/elixir \
@@ -42,5 +42,6 @@ RUN mix do deps.get, deps.compile, compile
 RUN mix release
 
 # Hookup Release to Entrypoint and Command
+ENV REPLACE_OS_VARS true
 ENTRYPOINT ["docker/entrypoint.sh"]
 CMD _build/dev/rel/dist_counter/bin/dist_counter foreground
