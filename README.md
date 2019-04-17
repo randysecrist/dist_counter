@@ -54,6 +54,8 @@ The following will stop/start individual nodes to easily facilitate testing part
 
 ## Docker Container (Manual)
 
+```docker build -t randysecrist/dist_counter:master .```
+
 The following commands will pull a docker image and setup a 3 node environment.
 
 ```bash

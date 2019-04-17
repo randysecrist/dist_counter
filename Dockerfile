@@ -36,10 +36,11 @@ WORKDIR /home/elixir
 RUN chown -R elixir:elixir .
 
 USER elixir
-RUN mix local.hex --force
-RUN mix local.rebar --force
-RUN mix do deps.get, deps.compile, compile
-RUN mix release
+RUN MIX_ENV=prod mix do local.hex --force, local.rebar --force
+RUN MIX_ENV=prod mix do deps.get, deps.compile, compile
+RUN MIX_ENV=prod mix release --env=prod
+RUN MIX_ENV=prod mix clean
+RUN MIX_ENV=prod mix deps.clean --all
 
 # Hookup Release to Entrypoint and Command
 ENV REPLACE_OS_VARS true
