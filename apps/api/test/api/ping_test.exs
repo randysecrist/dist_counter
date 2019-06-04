@@ -7,7 +7,7 @@ defmodule PingTest do
   test "can ping node" do
     %{status: status, body: body} = get("/ping")
     assert status == 200
-    assert (JSON.decode!(body) |> Map.get("status")) == "OK"
+    assert (Jason.decode!(body) |> Map.get("status")) == "OK"
   end
 
 end

@@ -14,7 +14,7 @@ defmodule API.NetworkConfig do
       {:error, :enoent} ->
         case System.get_env("ACTORS") do
           nil -> %{"actors" => []}
-          value -> JSON.decode!(value)
+          value -> Jason.decode!(value)
         end
       {:ok, data} -> :erlang.binary_to_term(data)
     end
@@ -49,7 +49,7 @@ defmodule API.NetworkConfig do
   end
 
   defp handle_body(_conn, body) when is_binary(body) do
-    JSON.decode!(body)
+    Jason.decode!(body)
   end
 
   defp save(term) when is_map(term) do

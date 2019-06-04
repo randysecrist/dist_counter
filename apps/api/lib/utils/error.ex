@@ -1,4 +1,8 @@
 defmodule API.Error do
+  @moduledoc ~S"""
+  Standardized error messages which map to both a message and
+  HTTP error code.  Best to define these in one place.
+  """
   @enforce_keys [:http_code, :code, :message]
   defstruct [:http_code, :code, :message]
 
@@ -65,7 +69,7 @@ defmodule API.Error do
   @spec format(atom) :: iodata
   def format(atom) when is_atom(atom) do
     error = make(atom)
-    JSON.encode!(%{
+    Jason.encode!(%{
       type: error.code,
       message: error.message})
   end

@@ -1,5 +1,12 @@
 defmodule API.Response do
+  @moduledoc ~S"""
+  A standard way of creating a :cowboy_req.reply.
 
+  Adds a CRC to every response for client side cache reasons.
+
+  Also a decent placeholder for logic which reports rate
+  limits and simple metadata (header) appending logic.
+  """
   alias API.Error, as: E
 
   def send(req0, %API.Error{} = error) do
@@ -18,19 +25,22 @@ defmodule API.Response do
         "access-control-allow-headers" => "content-type"}, "", req0)
   end
   def send(req0, status, response_term) do
+    send(req0, status, response_term, "application/json")
+  end
+  def send(req0, status, response_term, content_type) do
     {:ok, json, crc32} = make(response_term)
     :cowboy_req.reply(status,
-      %{"content-type" => "application/json",
+      %{"content-type" => content_type,
         "access-control-allow-origin" => "*",
-        "x-challenge-crc32" => Integer.to_string(crc32)}, json, req0)
+        "x-sfn-crc32" => Integer.to_string(crc32)}, json, req0)
   end
 
   defp make(map) when is_map(map) do
-    json = Poison.encode!(map)
+    json = Jason.encode!(map)
     makeCRC(json)
   end
   defp make(list) when is_list(list) do
-    json = JSON.encode!(list)
+    json = Jason.encode!(list)
     makeCRC(json)
   end
   defp make(json) when is_binary(json) do

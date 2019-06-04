@@ -16,7 +16,7 @@ defmodule ConfigTest do
     wait_until fn ->
       response = get("/config")
       assert 200 == response[:status]
-      body_map = JSON.decode!(response[:body])
+      body_map = Jason.decode!(response[:body])
       assert [] == body_map["actors"]
       assert "DEFAULT" == body_map["challenge_id"]
     end
@@ -33,5 +33,5 @@ defmodule ConfigTest do
       ]} == NetworkConfig.get_config()
     end
   end
-  
+
 end
