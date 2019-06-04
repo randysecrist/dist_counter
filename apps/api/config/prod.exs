@@ -3,9 +3,9 @@ use Mix.Config
 config :api,
   [
     network: [
-      {:protocol, :https},
-      {:bind, {'0.0.0.0', 443}},
-      {:acceptors, System.schedulers_online * 4},
+      {:protocol, :http},
+      {:bind, {'0.0.0.0', 7777}},
+      {:acceptors, System.schedulers_online * 2},
     ],
     ssl: [
       {:keyfile, File.cwd! <> "/priv/ssl/__challenge_com.key"},

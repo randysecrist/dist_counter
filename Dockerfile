@@ -36,11 +36,11 @@ WORKDIR /home/elixir
 RUN chown -R elixir:elixir .
 
 USER elixir
-RUN MIX_ENV=dev mix do local.hex --force, local.rebar --force
-RUN MIX_ENV=dev mix do deps.get, deps.compile, compile
-RUN MIX_ENV=dev mix release --env=dev
+RUN MIX_ENV=prod mix do local.hex --force, local.rebar --force
+RUN MIX_ENV=prod mix do deps.get, deps.compile, compile
+RUN MIX_ENV=prod mix release --env=prod
 
 # Hookup Release to Entrypoint and Command
 ENV REPLACE_OS_VARS true
 ENTRYPOINT ["docker/entrypoint.sh"]
-CMD _build/dev/rel/dist_counter/bin/dist_counter foreground
+CMD _build/prod/rel/dist_counter/bin/dist_counter foreground

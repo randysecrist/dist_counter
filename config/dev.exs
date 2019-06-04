@@ -2,8 +2,9 @@ use Mix.Config
 
 config :logger,
   backends: [
-    {FileLoggerBackend, :error_log},
-    {FileLoggerBackend, :access_log}]
+    {FileLoggerBackend, :access_log},
+    {FileLoggerBackend, :error_log}
+  ]
 
 config :logger, :access_log,
   level: :info,

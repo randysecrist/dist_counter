@@ -5,17 +5,17 @@ require Logger
 
 defmodule API.Cron do
   def heartbeat() do
-    Logger.debug("Cron: Heartbeat")
+    Logger.info("Cron: Heartbeat")
     connect()
   end
 
   def save_state() do
-    Logger.debug("Saving State")
+    Logger.info("Saving State")
     State.view |> State.merge |> State.save
   end
 
   defp connect() do
-    Logger.debug("Connect")
+    Logger.info("Connect")
     case length(Node.list) == length(NetworkConfig.get_config["actors"]) - 1 do
       false ->
         actors = NetworkConfig.get_config["actors"]
