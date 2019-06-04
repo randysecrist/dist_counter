@@ -38,8 +38,7 @@ defmodule API.Mixfile do
       {:setup, github: "uwiger/setup", tag: "2.0.2", manager: :rebar, override: true},
       {:parse_trans, "~> 3.3.0", override: true},
       {:uuid, "~> 1.7.5", hex: :uuid_erl},
-      {:tzdata, "~> 0.5.20"},
-      {:meck, "~> 0.8.13", runtime: false, override: true}
+      {:tzdata, "~> 0.5.20"}
     ]
   end
 end
