@@ -16,6 +16,7 @@ services:
       - CHALLENGE_ID=1
     env_file:
       - docker/dist_counter.env
+    mem_limit: 100m
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter1:7777/ping"]
         interval: 2s
@@ -36,6 +37,7 @@ services:
       - CHALLENGE_ID=2
     env_file:
       - docker/dist_counter.env
+    mem_limit: 100m
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter2:7777/ping"]
         interval: 2s
@@ -56,6 +58,7 @@ services:
       - CHALLENGE_ID=3
     env_file:
       - docker/dist_counter.env
+    mem_limit: 100m
     healthcheck:
         test: ["CMD", "curl", "-f", "http://counter3:7777/ping"]
         interval: 2s
