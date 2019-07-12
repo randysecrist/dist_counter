@@ -21,6 +21,7 @@ services:
         test: ["CMD", "curl", "-f", "http://counter1:7777/ping"]
         interval: 2s
         retries: 10
+    mem_limit: 128m
 
   counter2:
     image: randysecrist/dist_counter:master
@@ -42,6 +43,7 @@ services:
         test: ["CMD", "curl", "-f", "http://counter2:7777/ping"]
         interval: 2s
         retries: 10
+    mem_limit: 128m
 
   counter3:
     image: randysecrist/dist_counter:master
@@ -63,6 +65,7 @@ services:
         test: ["CMD", "curl", "-f", "http://counter3:7777/ping"]
         interval: 2s
         retries: 10
+    mem_limit: 128m
 
 networks:
   vpcbr:
